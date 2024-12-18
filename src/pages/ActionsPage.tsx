@@ -1,22 +1,13 @@
 import React, { useState } from 'react';
 import { CategoryCard } from '../components/dashboard/CategoryCard';
-import { StatCard } from '../components/dashboard/StatCard';
-import { renderSection } from '../components/dashboard/SectionRenderer';
 import { foodSection, otherStats } from '../constants/dashboardSections';
-import BudgetChefWizard from '../components/budget-chef/BudgetChefWizard';
 import WelcomeBanner from '../components/dashboard/WelcomeBanner';
+import BudgetChefWizard from '../components/budget-chef/BudgetChefWizard';
+import SectionRenderer from '../components/dashboard/SectionRenderer';
 
 const ActionsPage = () => {
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [showBudgetChef, setShowBudgetChef] = useState(false);
-
-  if (showBudgetChef) {
-    return <BudgetChefWizard onBack={() => setShowBudgetChef(false)} />;
-  }
-
-  if (selectedSection) {
-    return renderSection(selectedSection, () => setSelectedSection(null));
-  }
 
   const handleItemClick = (id: string) => {
     if (id === 'budget-chef') {
@@ -26,24 +17,33 @@ const ActionsPage = () => {
     }
   };
 
-  return (
-    <main className="max-w-7xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <WelcomeBanner />
-      </div>
+  if (showBudgetChef) {
+    return <BudgetChefWizard onBack={() => setShowBudgetChef(false)} />;
+  }
 
-      <div className="space-y-8">
+  if (selectedSection) {
+    return <SectionRenderer section={selectedSection} onBack={() => setSelectedSection(null)} />;
+  }
+
+  return (
+    <main className="page-container">
+      <WelcomeBanner />
+
+      <div className="space-y-4 mt-4">
         <CategoryCard 
           {...foodSection} 
           onItemClick={handleItemClick}
         />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {otherStats.map((stat) => (
-            <StatCard
+            <CategoryCard
               key={stat.id}
-              {...stat}
-              onClick={() => setSelectedSection(stat.id)}
+              icon={stat.icon}
+              title={stat.title}
+              description=""
+              items={[{ ...stat }]}
+              onItemClick={() => setSelectedSection(stat.id)}
             />
           ))}
         </div>
