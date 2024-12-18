@@ -1,6 +1,6 @@
 {
-  "name": "MyDeals",
-  "short_name": "MyDeals",
+  "name": "Keyvo",
+  "short_name": "Keyvo",
   "description": "Gagnez des récompenses en adoptant un mode de vie écoresponsable",
   "start_url": "/",
   "display": "standalone",
